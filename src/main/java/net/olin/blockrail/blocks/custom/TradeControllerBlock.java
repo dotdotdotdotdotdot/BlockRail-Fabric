@@ -37,8 +37,7 @@ import net.olin.blockrail.blocks.entity.TradeControllerBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class TradeControllerBlock extends BlockWithEntity implements BlockEntityProvider, IWrenchable {
-	private static final VoxelShape SHAPE = Block.createCuboidShape(0,0, 0, 16, 4, 16);
-	private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
 	public TradeControllerBlock(Settings settings) {
 		super(settings);

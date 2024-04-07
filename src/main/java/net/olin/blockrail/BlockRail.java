@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 public class BlockRail implements ModInitializer {
 	public static final String MOD_ID = "blockrail";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Loading " + MOD_ID);
@@ -29,8 +28,5 @@ public class BlockRail implements ModInitializer {
 		ModTags.registerModTags();
 
 		ModScreenHandlers.registerScreenHandler();
-
-
-
 	}
 }

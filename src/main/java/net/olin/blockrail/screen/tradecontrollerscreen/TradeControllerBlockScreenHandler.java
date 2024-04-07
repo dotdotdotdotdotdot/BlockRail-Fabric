@@ -1,6 +1,8 @@
 package net.olin.blockrail.screen.tradecontrollerscreen;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -34,8 +36,6 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 		this.addSlot(new Slot(inventory, 0, 36, 37));
 		this.addSlot(new Slot(inventory, 1, 62, 37));
 		this.addSlot(new Slot(inventory, 2, 120, 38));
-
-
 
 		addPlayerInventory(playerInventory);
 		addPlayerHotbar(playerInventory);
