@@ -29,22 +29,19 @@ import org.jetbrains.annotations.Nullable;
 
 public class ExportStationBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
 	private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
-
 	private static final int INPUT_SLOT = 0;
 	private static final int OUTPUT_SLOT = 1;
-
 	protected final PropertyDelegate propertyDelegate;
 	private int progress = 0;
 	private int maxProgress = 72;
-
 	public ExportStationBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.EXPORT_STATION_BLOCK_ENTITY, pos, state);
 		this.propertyDelegate = new PropertyDelegate() {
 			@Override
 			public int get(int index) {
 				return switch (index) {
-					case 0 -> ExportStationBlockEntity.this.progress;
-					case 1 -> ExportStationBlockEntity.this.maxProgress;
+					case 0 -> ExportStationBlockEntity.this.maxProgress;
+					case 1 -> ExportStationBlockEntity.this.progress;
 					default -> 0;
 				};
 			}

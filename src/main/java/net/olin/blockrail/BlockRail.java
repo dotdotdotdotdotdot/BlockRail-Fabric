@@ -7,14 +7,19 @@ import net.olin.blockrail.blocks.entity.ModBlockEntities;
 import net.olin.blockrail.item.ModItemGroups;
 import net.olin.blockrail.item.ModItems;
 import net.olin.blockrail.screen.ModScreenHandlers;
+import net.olin.blockrail.trades.Trade;
 import net.olin.blockrail.util.ModTags;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+
 public class BlockRail implements ModInitializer {
 	public static final String MOD_ID = "blockrail";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	ArrayList<Trade> trades = new ArrayList<>();
+
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Loading " + MOD_ID);

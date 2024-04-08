@@ -16,9 +16,18 @@ import net.minecraft.screen.slot.Slot;
 import net.olin.blockrail.blocks.entity.TradeControllerBlockEntity;
 import net.olin.blockrail.screen.ModScreenHandlers;
 
+import net.olin.blockrail.trades.Trade;
+import net.olin.blockrail.trades.Trades;
+
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static net.olin.blockrail.trades.Trades.TRADES;
+
 public class TradeControllerBlockScreenHandler extends ScreenHandler {
+
 	private final Inventory inventory;
 	private final TradeControllerBlockEntity blockEntity;
 
@@ -40,6 +49,17 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 		addPlayerInventory(playerInventory);
 		addPlayerHotbar(playerInventory);
 
+		addTradeButtons(TRADES);
+
+	}
+
+	public void addTradeButtons(ArrayList<Trade> trades) {
+
+	}
+
+	@Override
+	public boolean onButtonClick(PlayerEntity player, int id) {
+		return super.onButtonClick(player, id);
 	}
 
 	@Override
