@@ -33,7 +33,6 @@ public class ExportBlockScreen extends HandledScreen<ExportBlockScreenHandler> {
 		context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
 		renderProgressArrow(context, x, y);
-
 	}
 
 	private void renderProgressArrow(DrawContext context, int x, int y) {

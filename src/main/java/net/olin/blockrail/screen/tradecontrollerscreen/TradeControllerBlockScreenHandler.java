@@ -1,14 +1,13 @@
 package net.olin.blockrail.screen.tradecontrollerscreen;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
@@ -16,51 +15,79 @@ import net.minecraft.screen.slot.Slot;
 import net.olin.blockrail.blocks.entity.TradeControllerBlockEntity;
 import net.olin.blockrail.screen.ModScreenHandlers;
 
-import net.olin.blockrail.trades.Trade;
 import net.olin.blockrail.trades.Trades;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static net.olin.blockrail.trades.Trades.TRADES;
-
 public class TradeControllerBlockScreenHandler extends ScreenHandler {
 
 	private final Inventory inventory;
-	private final TradeControllerBlockEntity blockEntity;
+	public final TradeControllerBlockEntity blockEntity;
+	private final PropertyDelegate propertyDelegate;
+	private int selectedButtonIndex = -1;
 
 	public TradeControllerBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-		this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()));
+		this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
+				new ArrayPropertyDelegate(3));
 	}
 
-	public TradeControllerBlockScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
+	public TradeControllerBlockScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
 		super(ModScreenHandlers.TRADE_CONTROLLER_BLOCK_SCREEN_HANDLER, syncId);
-		checkSize((Inventory) blockEntity, 3);
+        checkSize((Inventory) blockEntity, 3);
 		this.inventory = ((Inventory) blockEntity);
-		inventory.onOpen(playerInventory.player);
+        inventory.onOpen(playerInventory.player);
+		this.propertyDelegate = arrayPropertyDelegate;
 		this.blockEntity = ((TradeControllerBlockEntity) blockEntity);
 
 		this.addSlot(new Slot(inventory, 0, 36, 37));
-		this.addSlot(new Slot(inventory, 1, 62, 37));
-		this.addSlot(new Slot(inventory, 2, 120, 38));
+		this.addSlot(new Slot(inventory, 1, 120, 38));
 
 		addPlayerInventory(playerInventory);
 		addPlayerHotbar(playerInventory);
 
-		addTradeButtons(TRADES);
-
+		addProperties(arrayPropertyDelegate);
 	}
 
-	public void addTradeButtons(ArrayList<Trade> trades) {
+	public boolean isTrading() { return propertyDelegate.get(0) > 0; }
 
+	public int getCounterProgress() {
+		int counter = this.propertyDelegate.get(0);
+		int counted = this.propertyDelegate.get(1);
+		int counterBar = 59;
+
+		return counted != 0 && counter != 0 ? counter * counterBar / counted : 0;
 	}
 
-	@Override
-	public boolean onButtonClick(PlayerEntity player, int id) {
-		return super.onButtonClick(player, id);
+	public int getCount() {
+		return this.propertyDelegate.get(0);
 	}
+	public int getSelectedTradeIndex() {
+		return this.propertyDelegate.get(2);
+	}
+
+	public void setSelectedButton(int i) {
+		setSelectedTrade(i);
+		this.propertyDelegate.set(2, Trades.TRADES.get(i).getCost());
+		this.selectedButtonIndex = i;
+	}
+
+	public int getSelectedButtonIndex() {
+		return this.selectedButtonIndex;
+	}
+
+	public void setSelectedTrade(int i) {
+		this.propertyDelegate.set(2, i);
+	}
+
+
+
+	protected TradeControllerBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, Inventory inventory, TradeControllerBlockEntity blockEntity, PropertyDelegate propertyDelegate) {
+		super(type, syncId);
+		this.inventory = inventory;
+		this.blockEntity = blockEntity;
+		this.propertyDelegate = propertyDelegate;
+    }
+
 
 	@Override
 	public ItemStack quickMove(PlayerEntity player, int invSlot) {

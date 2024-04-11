@@ -2,11 +2,10 @@ package net.olin.blockrail.screen.tradecontrollerscreen;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.IconWidget;
-import net.minecraft.client.gui.widget.ScrollableWidget;
-import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -14,93 +13,68 @@ import net.olin.blockrail.BlockRail;
 import net.olin.blockrail.trades.Trade;
 import net.olin.blockrail.trades.Trades;
 
+import static com.ibm.icu.text.PluralRules.Operand.i;
+
 public class TradeControllerBlockScreen extends HandledScreen<TradeControllerBlockScreenHandler> {
-	private int buttonV = 166;
-	private int selected = -1;
 	private static final Identifier TEXTURE = new Identifier(BlockRail.MOD_ID, "textures/gui/trade_controller_block_gui.png");
 	public TradeControllerBlockScreen(TradeControllerBlockScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
     }
-
 	@Override
 	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-		int initialX = width/2 - 378/2;
-		int initialY = (height - backgroundHeight) / 2;
-		int textureWidth = 512;
-		int textureHeight = 256;
+		int x = (width - 378) / 2;
+		int y = (height - backgroundHeight) / 2;
 
-		context.drawTexture(TEXTURE, initialX, initialY, 0, 0, 276, 166, textureWidth, textureHeight);
+		context.drawTexture(TEXTURE, x, y, 0, 0, 276, 166, 512, 256);
+		renderCounterBar(context, x, y);
 	}
-
 	@Override
 	protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+		int x = (width - 378) / 2;
+		int y = (height - backgroundHeight) / 2;
+
 		super.drawForeground(context, mouseX, mouseY);
-		scrollBar();
-		tradeButtons();
+		tradeButtons(x, y);
+		renderCounter(context, x, y);
 	}
 
-	protected void tradeButtons() {
-		int x = (width/2 - 378/2) + 5;
+	protected void tradeButtons(int imx, int imy) {
+		int x = ((width - 378) / 2) + 5;
 		int y = ((height - backgroundHeight) / 2) + 18;
 
 		for (int i = 0; i < Trades.TRADES.size(); i++) {
-			int buttonIndex = i;
-			if (selected == buttonIndex) {
-				addDrawableChild(new TexturedButtonWidget(x , y + buttonIndex*27, 82, 27, 0, buttonV + 27, 0,
-						TEXTURE, 512, 256, button -> {
-					highlightButton(Trades.TRADES.get(buttonIndex), buttonIndex);
-				}));
-				addDrawable(new IconWidget(x, y + i*27, 16, 16, Trades.TRADES.get(i).getTexture()));
+			if (handler.getSelectedButtonIndex() == i) {
+				drawButton(x, y+i*28, 28, Trades.TRADES.get(i), i);
 			} else {
-				addDrawableChild(new TexturedButtonWidget(x , y + i*27, 82, 27, 0, buttonV, 0,
-						TEXTURE, 512, 256, button -> {
-					highlightButton(Trades.TRADES.get(buttonIndex), buttonIndex);
-				}));
-				addDrawable(new IconWidget(x, y + i*27, 16, 16, Trades.TRADES.get(i).getTexture()));
+				drawButton(x, y+i*28, 0, Trades.TRADES.get(i), i);
 			}
 		}
 	}
-	protected void highlightButton(Trade trade, int i) {
-		if ( Trades.TRADES.get(i) == trade) {
-			selected = i;
+
+	private void renderCounter(DrawContext context, int imx, int imy) {
+		int x = (width - 378) / 2;
+		int y = (height - backgroundHeight) / 2;
+
+		if (handler.isTrading()) {
+			addDrawable(new TextWidget(x+50, y+7, 16,16, Text.literal(String.valueOf(handler.getCount())), textRenderer));
 		}
 	}
 
-	protected void scrollBar() {
-		addDrawableChild(new ScrollableWidget(width, height, width, height, Text.translatable("block.blockrail.trade_controller_block")) {
-			@Override
-			protected void appendClickableNarrations(NarrationMessageBuilder builder) {
-				return;
-			}
+	private void renderCounterBar(DrawContext context, int imx, int imy) {
+		int x = (width - 378) / 2;
+		int y = (height - backgroundHeight) / 2;
 
-			@Override
-			protected int getContentsHeight() {
-				return Trades.TRADES.size()*27;
-			}
-
-			@Override
-			protected double getDeltaYPerScroll() {
-				return 27;
-			}
-
-			@Override
-			protected void renderContents(DrawContext context, int mouseX, int mouseY, float delta) {
-				int x = (width/2 - 378/2) + 5;
-				int y = ((height - backgroundHeight) / 2) + 18;
-
-				new TexturedButtonWidget(x, y, 20, 20, 0, 0, TEXTURE, button -> {
-					System.out.println("sCrolling");
-				});
-
-			}
-		});
+		if (handler.isTrading()) {
+			context.drawTexture(TEXTURE, x + 171, y + 15, 277, handler.getCounterProgress() - 58, 30, 59, 512, 256);
+			context.drawTexture(TEXTURE, x + 171, y + 73, 277, 58, 30, 1, 512, 256);
+		}
 	}
-
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-		return super.mouseScrolled(mouseX, mouseY, amount);
+	protected void drawButton(int x, int y, int v, Trade trade, int i) {
+		addDrawableChild(new TexturedButtonWidget(x, y, 82, 28, 0, 166 + v, 0, TEXTURE, 512, 256, button ->
+                handler.setSelectedButton(i)));
+		addDrawable(new IconWidget(x + 6, y + 6, 16, 16, trade.getTexture()));
+		addDrawable(new TextWidget(x + 29, y + 7, 16, 16, Text.literal(trade.getStringCost()), textRenderer).alignRight());
 	}
-
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 		renderBackground(context);
