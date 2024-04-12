@@ -1,0 +1,29 @@
+{
+  "create:root": {
+    "criteria": {
+      "0": "2024-04-12 12:05:33 +0200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2024-04-12 12:04:29 +0200"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:snowy_slopes": "2024-04-12 12:05:21 +0200",
+      "minecraft:frozen_river": "2024-04-12 12:04:41 +0200",
+      "minecraft:river": "2024-04-12 12:05:25 +0200",
+      "minecraft:snowy_plains": "2024-04-12 12:04:31 +0200",
+      "minecraft:stony_shore": "2024-04-12 12:05:22 +0200",
+      "minecraft:snowy_taiga": "2024-04-12 12:04:40 +0200",
+      "minecraft:grove": "2024-04-12 12:04:34 +0200",
+      "minecraft:forest": "2024-04-12 12:05:19 +0200",
+      "minecraft:plains": "2024-04-12 12:05:15 +0200"
+    },
+    "done": false
+  },
+  "DataVersion": 3465
+}

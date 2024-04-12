@@ -1,0 +1,13 @@
+{
+  "block.blockrail.export_block": "Export Block",
+  "block.blockrail.trade_controller_block": "Trade Controller",
+  "item.blockrail.bucket_of_beer": "Bucket of Beer",
+  "item.blockrail.ticket": "Ticket",
+  "itemgroup.blockrail": "BlockRail",
+  "trade.blockrail.trade1": "Trade 1",
+  "trade.blockrail.trade2": "Trade 2",
+  "trade.blockrail.trade3": "Trade 3",
+  "trade.blockrail.trade4": "Trade 4",
+  "trade.blockrail.trade5": "Trade 5",
+  "trade.blockrail.trade6": "Trade 6"
+}
