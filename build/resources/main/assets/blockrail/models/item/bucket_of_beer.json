@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "blockrail:item/bucket_of_beer"
-  }
-}
