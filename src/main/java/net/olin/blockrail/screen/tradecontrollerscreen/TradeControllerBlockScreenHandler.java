@@ -24,7 +24,6 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 	private final Inventory inventory;
 	public final TradeControllerBlockEntity blockEntity;
 	private final PropertyDelegate propertyDelegate;
-	private int selectedButtonIndex = -1;
 
 	public TradeControllerBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
 		this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
@@ -33,7 +32,7 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 
 	public TradeControllerBlockScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
 		super(ModScreenHandlers.TRADE_CONTROLLER_BLOCK_SCREEN_HANDLER, syncId);
-        checkSize((Inventory) blockEntity, 3);
+        checkSize((Inventory) blockEntity, 2);
 		this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
 		this.propertyDelegate = arrayPropertyDelegate;
@@ -61,23 +60,15 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 	public int getCount() {
 		return this.propertyDelegate.get(0);
 	}
-	public int getSelectedTradeIndex() {
-		return this.propertyDelegate.get(2);
-	}
 
-	public void setSelectedButton(int i) {
-		setSelectedTrade(i);
-		this.propertyDelegate.set(2, Trades.TRADES.get(i).getCost());
-		this.selectedButtonIndex = i;
+	public void setSelectedButtonIndex(int i) {
+		propertyDelegate.set(2, i);
 	}
 
 	public int getSelectedButtonIndex() {
-		return this.selectedButtonIndex;
+		return this.propertyDelegate.get(2);
 	}
 
-	public void setSelectedTrade(int i) {
-		this.propertyDelegate.set(2, i);
-	}
 
 
 

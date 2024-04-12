@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.PropertyDelegate;
@@ -19,7 +18,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.olin.blockrail.blocks.ModBlocks;
 import net.olin.blockrail.screen.tradecontrollerscreen.TradeControllerBlockScreenHandler;
 import net.olin.blockrail.trades.Trade;
 import net.olin.blockrail.trades.Trades;
@@ -31,11 +29,9 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 	private static final int INPUT_SLOT_1 = 0;
 	private static final int OUTPUT_SLOT = 1;
 	private int counter = 0;
-	private int tradeIndex = 0;
 	private int counted = 256;
-	private Trade trade;
+	private int tradeIndex = 0;
 	protected PropertyDelegate propertyDelegate;
-
     public TradeControllerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.TRADE_CONTROLLER_BLOCK_ENTITY, pos, state);
         this.propertyDelegate = new PropertyDelegate() {
@@ -45,7 +41,7 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 					case 0 -> TradeControllerBlockEntity.this.counter;
 					case 1 -> TradeControllerBlockEntity.this.counted;
 					case 2 -> TradeControllerBlockEntity.this.tradeIndex;
-					default -> 0;
+					default -> 2;
 				};
             }
 			@Override
@@ -69,21 +65,15 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		Inventories.writeNbt(nbt, inventory);
-		for (int i = 0; i < Trades.TRADES.size(); i++) {
-			nbt.putInt(Trades.TRADES.get(i).getName(), Trades.TRADES.get(i).getCost());
-			nbt.putInt("counter", counter);
-		}
-		nbt.putInt(Trades.TRADES.get(tradeIndex).getName(), tradeIndex);
+		nbt.putInt("counter", counter);
+		nbt.putInt("tradeindex", tradeIndex);
 	}
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		Inventories.readNbt(nbt, inventory);
-		for (int i = 0; i < Trades.TRADES.size(); i++) {
-			nbt.getInt(Trades.TRADES.get(i).getName());
-			nbt.getInt("counter");
-		}
-		nbt.getInt(Trades.TRADES.get(tradeIndex).getName());
+		nbt.getInt("counter");
+		nbt.getInt("tradeindex");
 	}
 	@Override
 	public Text getDisplayName() { return Text.translatable("block.blockrail.trade_controller_block"); }
@@ -101,23 +91,27 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 			return;
 		}
 		if (isOutputSlotEmptyOrReceivable()) {
-			checkSelectedTrade();
-			if (this.hasTrade(Trades.TRADES.get(tradeIndex))) {
-                this.removeItem();
+			if (this.hasTrade(selectedTrade())) {
+				this.setTradeIndex(selectedTrade());
+				this.setCounted(selectedTrade());
+				this.removeItem();
 				this.increaseCounter();
 				markDirty(world, pos, state);
 
 				if (tradeFinished()) {
-					this.tradeItem(Trades.TRADES.get(tradeIndex));
+					this.tradeItem(selectedTrade());
 					this.resetCounter();
 				}
 			}
+		} else {
+			this.resetCounter();
+			markDirty(world, pos, state);
 		}
 	}
 
+
 	private void resetCounter() {
 		this.counter = 0;
-		this.counted = Trades.TRADES.get(tradeIndex).getCost();
 	}
 
 	private void tradeItem(Trade trade) {
@@ -135,14 +129,18 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 
 		return hasInput && canInsertAmountIntoOutputSlot(new ItemStack(trade.getItemReward().getItem())) && canInsertItemIntoOutputSlot(trade.getItemReward().getItem());
 	}
-
 	private void increaseCounter() {
 		++this.counter;
 	}
-	private int checkSelectedTrade() {
-		return this.tradeIndex;
+	private void setCounted(Trade trade) {
+		counted = trade.getCost();
 	}
-
+	private Trade selectedTrade() {
+		return Trades.TRADES.get(tradeIndex);
+	}
+	private void setTradeIndex(Trade trade) {
+		this.tradeIndex = Trades.TRADES.indexOf(trade);
+	}
 	private boolean tradeFinished() {
 		return counter >= counted;
 	}

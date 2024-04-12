@@ -1,10 +1,7 @@
-## Chores
-
-* Get Dani m to do API
-
+# Chores
 ## To do
 * API call for market simulation
-
+* Trade selection logic
 
 * etc..
 

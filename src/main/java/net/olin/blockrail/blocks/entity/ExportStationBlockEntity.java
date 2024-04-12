@@ -40,8 +40,8 @@ public class ExportStationBlockEntity extends BlockEntity implements ExtendedScr
 			@Override
 			public int get(int index) {
 				return switch (index) {
-					case 0 -> ExportStationBlockEntity.this.maxProgress;
-					case 1 -> ExportStationBlockEntity.this.progress;
+					case 0 -> ExportStationBlockEntity.this.progress;
+					case 1 -> ExportStationBlockEntity.this.maxProgress;
 					default -> 0;
 				};
 			}

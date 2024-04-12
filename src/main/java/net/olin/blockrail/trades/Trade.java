@@ -11,7 +11,6 @@ public class Trade {
 	private ItemStack itemCost;
 	private int reward;
 	private ItemStack itemReward;
-
 	private final Identifier texture;
     public Trade(MutableText name, int cost, ItemStack itemCost, int reward, ItemStack itemReward, Identifier texture) {
 		this.name = name;

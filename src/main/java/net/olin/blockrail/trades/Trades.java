@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 public class Trades {
 	public static ArrayList<Trade> TRADES = new ArrayList<>();
-	public static final Trade ACACIA_BOAT = addTrades(Text.translatable("trade.blockrail.acacia_boat"), 6,
-			new ItemStack(Items.ACACIA_BOAT), 1, new ItemStack(Items.EMERALD), new Identifier("minecraft", "textures/item/acacia_boat.png"));
-	public static final Trade BOAT_TEST = addTrades(Text.translatable("trade.blockrail.acacia_boat"), 2,
-			new ItemStack(Items.OAK_BOAT), 1, new ItemStack(Items.EMERALD), new Identifier("minecraft", "textures/item/acacia_boat.png"));
+	public static final Trade EMERALD = addTrades(Text.translatable("trade.blockrail.emerald"), 4,
+			new ItemStack(Items.EMERALD), 1, new ItemStack(Items.EMERALD), new Identifier("minecraft", "textures/item/emerald.png"));
+	public static final Trade BOAT_TEST = addTrades(Text.translatable("trade.blockrail.oak_boat"), 2,
+			new ItemStack(Items.OAK_BOAT), 2, new ItemStack(Items.EMERALD), new Identifier("minecraft", "textures/item/oak_boat.png"));
 	private static void appendTrades(Trade trade) {
 		TRADES.add(trade);
 	}

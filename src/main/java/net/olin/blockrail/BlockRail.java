@@ -8,6 +8,7 @@ import net.olin.blockrail.item.ModItemGroups;
 import net.olin.blockrail.item.ModItems;
 import net.olin.blockrail.screen.ModScreenHandlers;
 import net.olin.blockrail.trades.Trade;
+import net.olin.blockrail.trades.Trades;
 import net.olin.blockrail.util.ModTags;
 
 import org.slf4j.Logger;
@@ -33,5 +34,6 @@ public class BlockRail implements ModInitializer {
 		ModTags.registerModTags();
 
 		ModScreenHandlers.registerScreenHandler();
+		Trades.registerTrades();
 	}
 }
