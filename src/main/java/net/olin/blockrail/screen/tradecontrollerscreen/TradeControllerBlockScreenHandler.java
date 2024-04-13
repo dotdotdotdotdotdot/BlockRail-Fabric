@@ -15,8 +15,6 @@ import net.minecraft.screen.slot.Slot;
 import net.olin.blockrail.blocks.entity.TradeControllerBlockEntity;
 import net.olin.blockrail.screen.ModScreenHandlers;
 
-import net.olin.blockrail.trades.Trades;
-
 import org.jetbrains.annotations.Nullable;
 
 public class TradeControllerBlockScreenHandler extends ScreenHandler {

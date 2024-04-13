@@ -1,12 +1,8 @@
 package net.olin.blockrail.screen.tradecontrollerscreen;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.IconWidget;
-import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
@@ -14,8 +10,6 @@ import net.minecraft.util.Identifier;
 import net.olin.blockrail.BlockRail;
 import net.olin.blockrail.trades.Trade;
 import net.olin.blockrail.trades.Trades;
-
-import static com.ibm.icu.text.PluralRules.Operand.i;
 
 public class TradeControllerBlockScreen extends HandledScreen<TradeControllerBlockScreenHandler> {
 	private static final Identifier TEXTURE = new Identifier(BlockRail.MOD_ID, "textures/gui/trade_controller_block_gui.png");
@@ -62,12 +56,12 @@ public class TradeControllerBlockScreen extends HandledScreen<TradeControllerBlo
 	}
 	protected void renderButton(DrawContext context, int x, int y, int v, Trade trade, int i) {
 		addDrawableChild(new TexturedButtonWidget(x, y, 82, 28, 0, 166 + v, 0, TEXTURE, 512, 256, button ->
-				{
-					handler.setSelectedButtonIndex(i);
-				}));
+		{
+			handler.setSelectedButtonIndex(i);
+		}));
 
-		context.drawTexture(trade.getTexture(), x + 6, y + 6, 0, 0, 16, 16, 16, 16);
-		context.drawText(textRenderer, trade.getStringCost(), x - 85, y - 32, Colors.WHITE, false);
+		context.drawTexture(trade.getTexturePath(), x + 6, y + 6, 0, 0, 16, 16, 16, 16);
+		context.drawText(textRenderer, trade.inputAmountToString(), x - 85, y - 32, Colors.WHITE, false);
 	}
 	private void renderCounter(DrawContext context, int imx, int imy) {
 		int x = (width - 378) / 2;
