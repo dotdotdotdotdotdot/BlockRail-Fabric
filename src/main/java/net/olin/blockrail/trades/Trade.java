@@ -41,5 +41,6 @@ public class Trade {
 	public ItemStack getItemCost() {
 		return this.itemCost;
 	}
+
 }
 
