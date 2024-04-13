@@ -1,7 +1,9 @@
 package net.olin.blockrail.util;
 import com.google.gson.Gson;
-import net.olin.blockrail.trades.Trade2;
-import net.olin.blockrail.trades.Trades2;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.olin.blockrail.trades.Trade;
+import net.olin.blockrail.trades.Trades;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -23,9 +25,12 @@ public class API {
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
 
-            Trade2 trade = gson.fromJson(getResponse.body(), Trade2.class);
+            APISchema apiBody = gson.fromJson(getResponse.body(), APISchema.class);
 
-            Trades2.appendTrades(trade);
+            Trade trade = new Trade(apiBody.getTradeId(),apiBody.getName(),apiBody.getInput(), apiBody.getInputAmount(),apiBody.getOutput(),apiBody.getOutputAmount(),
+                    apiBody.getNamespace(), apiBody.getTexturePath());
+            System.out.println(trade);
+            Trades.appendTrades(trade);
         }
 
     }

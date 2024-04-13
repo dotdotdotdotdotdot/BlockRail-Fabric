@@ -115,7 +115,7 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 	}
 
 	private void tradeItem(Trade trade) {
-		ItemStack result = new ItemStack(trade.getItemReward().getItem(), trade.getReward());
+		ItemStack result = new ItemStack(trade.getOutput().getItem(), trade.getOutputAmount());
 
 		this.setStack(OUTPUT_SLOT, new ItemStack(result.getItem(), getStack(OUTPUT_SLOT).getCount() + result.getCount()));
 	}
@@ -125,15 +125,15 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 	}
 
 	private boolean hasTrade(Trade trade) {
-		boolean hasInput = getStack(INPUT_SLOT_1).getItem() == trade.getItemCost().getItem();
+		boolean hasInput = getStack(INPUT_SLOT_1).getItem() == trade.getInput().getItem();
 
-		return hasInput && canInsertAmountIntoOutputSlot(new ItemStack(trade.getItemReward().getItem())) && canInsertItemIntoOutputSlot(trade.getItemReward().getItem());
+		return hasInput && canInsertAmountIntoOutputSlot(new ItemStack(trade.getOutput().getItem())) && canInsertItemIntoOutputSlot(trade.getOutput().getItem());
 	}
 	private void increaseCounter() {
 		++this.counter;
 	}
 	private void setCounted(Trade trade) {
-		counted = trade.getCost();
+		counted = trade.getInputAmount();
 	}
 	private Trade selectedTrade() {
 		return Trades.TRADES.get(tradeIndex);

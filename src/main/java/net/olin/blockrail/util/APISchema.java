@@ -1,29 +1,16 @@
-package net.olin.blockrail.trades;
+package net.olin.blockrail.util;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.MutableText;
-import net.minecraft.util.Identifier;
+public class APISchema {
 
-import java.util.Objects;
 
-public class Trade2 {
+    private int tradeId;
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getTradeId() {
-        return tradeId;
-    }
-
-    public void setTradeId(int tradeId) {
-        this.tradeId = tradeId;
     }
 
     public String getInput() {
@@ -66,28 +53,39 @@ public class Trade2 {
         this.texturePath = texturePath;
     }
 
-    private int tradeId;
     private String name;
     private String input;
     private int inputAmount;
     private String output;
     private int outputAmount;
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    private String namespace;
     private String texturePath;
-    public Trade2(int tradeId, String name, String input, int inputAmount, String output, int outputAmount, String texturePath) {
+    public APISchema(int tradeId, String name, String input, int inputAmount, String output, int outputAmount, String namespace, String texturePath) {
         this.tradeId = tradeId;
         this.name = name;
         this.input = input;
         this.inputAmount = inputAmount;
         this.output = output;
         this.outputAmount = outputAmount;
+        this.namespace = namespace;
         this.texturePath = texturePath;
     }
 
-    public ItemStack getItemStack(){
-        if(Objects.equals(this.name, "EMERALD")){
-            return new ItemStack(Items.EMERALD);
-        }
-        return null;
+    public int getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(int tradeId) {
+        this.tradeId = tradeId;
     }
 }
 
