@@ -1,0 +1,13 @@
+{
+  "type": "blockrail:trade",
+  "ingredients": [
+    {
+      "item": "minecraft:stone",
+      "count": 5
+    }
+  ],
+  "output": {
+    "item": "minecraft:emerald",
+    "count": 1
+  }
+}

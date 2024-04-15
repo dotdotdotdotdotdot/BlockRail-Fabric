@@ -58,6 +58,7 @@ public class TradeControllerBlockScreen extends HandledScreen<TradeControllerBlo
 		addDrawableChild(new TexturedButtonWidget(x, y, 82, 28, 0, 166 + v, 0, TEXTURE, 512, 256, button ->
 		{
 			handler.setSelectedButtonIndex(i);
+			System.out.println("SADASDA");
 		}));
 
 		context.drawTexture(trade.getTexturePath(), x + 6, y + 6, 0, 0, 16, 16, 16, 16);
