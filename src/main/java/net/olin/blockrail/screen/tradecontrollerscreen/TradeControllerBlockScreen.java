@@ -41,11 +41,9 @@ public class TradeControllerBlockScreen extends HandledScreen<TradeControllerBlo
 		int y = ((height - backgroundHeight) / 2) + 18;
 
 		for (int i = 0; i < Trades.TRADES.size(); i++) {
-			if (handler.getSelectedButtonIndex() == i) {
-				renderButton(context, x, y+i*28, 28, Trades.TRADES.get(i), i);
-			} else {
-				renderButton(context, x, y+i*28, 0, Trades.TRADES.get(i), i);
-			}
+			renderButton(context, x, y+i*28, 0, Trades.TRADES.get(i), i);
+			if (handler.getSelectedButtonIndex() == i)
+				renderButton(context, x, y+i*28, 28, Trades.TRADES.get(handler.getSelectedButtonIndex()), handler.getSelectedButtonIndex());
 		}
 	}
 	private void renderSelectedTrade(DrawContext context, int imx, int imy) {

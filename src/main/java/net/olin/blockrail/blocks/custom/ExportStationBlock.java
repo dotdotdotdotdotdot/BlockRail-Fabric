@@ -1,5 +1,6 @@
 package net.olin.blockrail.blocks.custom;
 
+import net.minecraft.util.*;
 import org.jetbrains.annotations.Nullable;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -18,10 +19,6 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -40,15 +37,20 @@ public class ExportStationBlock extends BlockWithEntity implements BlockEntityPr
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
 	}
+	@Override
+	@SuppressWarnings("deprecation")
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
+	}
+	@Override
+	@SuppressWarnings("deprecation")
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return super.mirror(state, mirror);
+	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
-	}
-
-	@Override
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
 
 	@Override
@@ -66,6 +68,10 @@ public class ExportStationBlock extends BlockWithEntity implements BlockEntityPr
 			}
 			super.onStateReplaced(state, world, pos, newState, moved);
 		}
+	}
+
+	public Class<ExportStationBlockEntity> getBlockEntityClass() {
+		return ExportStationBlockEntity.class;
 	}
 
 	@Override

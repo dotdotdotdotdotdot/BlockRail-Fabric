@@ -24,6 +24,7 @@ repositories {
 	maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
 	maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
 	maven { url = "https://maven.tterrag.com/" } // Flywheel
+	maven { url = "https://server.bbkr.space/artifactory/libs-release" } // LibGui
 }
 
 fabricApi {
@@ -45,6 +46,9 @@ dependencies {
 	// Development QOL
 	modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
 	modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
+
+	// LibGui
+	modImplementation("io.github.cottonmc:LibGui:${libgui_version}")
 
 	// Recipe Viewers - Create Fabric supports JEI, REI, and EMI.
 	switch (recipe_viewer.toLowerCase(Locale.ROOT)) {

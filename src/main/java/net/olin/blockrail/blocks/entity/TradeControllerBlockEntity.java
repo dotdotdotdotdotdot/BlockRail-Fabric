@@ -43,8 +43,6 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 
 	public TradeControllerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.TRADE_CONTROLLER_BLOCK_ENTITY, pos, state);
-		this.tradeIndex = 0;
-		this.counter = 0;
 		this.propertyDelegate = new PropertyDelegate() {
 			@Override
 			public int get(int index) {
@@ -57,26 +55,21 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 
 				};
 			}
+
 			@Override
 			public void set(int index, int value) {
 				switch (index) {
-					case 0:
-						TradeControllerBlockEntity.this.counter = value;
-					case 1:
-						TradeControllerBlockEntity.this.counted = value;
-					case 2:
-						TradeControllerBlockEntity.this.tradeIndex = value;
-						System.out.println("set pd: "+ tradeIndex);
+					case 0: TradeControllerBlockEntity.this.counter = value;
+					case 1: TradeControllerBlockEntity.this.counted = value;
+					case 2: TradeControllerBlockEntity.this.tradeIndex = value;
 				}
 			}
-
 			@Override
 			public int size() {
-				return 3;
+				return 2;
 			}
 		};
 	}
-
 	@Override
 	public Text getDisplayName() {
 		return Text.translatable("block.blockrail.trade_controller_block");
@@ -88,21 +81,23 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 	}
 
 	@Override
-	protected void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
-		Inventories.writeNbt(nbt, inventory);
-		nbt.putInt("counter", this.counter);
-		nbt.putInt("trade_index", this.tradeIndex);
-		System.out.println("write: "+ tradeIndex);
-	}
-	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		Inventories.readNbt(nbt, inventory);
-		this.counter = nbt.getInt("counter");
-		this.tradeIndex = nbt.getInt("trade_index");
-		System.out.println("readnbt: "+ tradeIndex);
+		counter = nbt.getInt("counter");
+		tradeIndex = nbt.getInt("trade_index");
+		System.out.println("readnbt: " + tradeIndex);
 	}
+
+	@Override
+	protected void writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		Inventories.writeNbt(nbt, inventory);
+		nbt.putInt("counter", counter);
+		nbt.putInt("trade_index", tradeIndex);
+		System.out.println("write: " + tradeIndex);
+	}
+
 	@Override
 	public DefaultedList<ItemStack> getItems() {
 		return this.inventory;
@@ -119,11 +114,12 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 			return;
 		}
 
+
+
 		if (isOutputSlotEmptyOrReceivable()) {
 			markDirty(world, pos, state);
 			if (this.hasTrade()) {
 				this.increaseCounter();
-				counter = 32;
 				markDirty(world, pos, state);
 
 				if (hasTradingFinished()) {
@@ -136,12 +132,23 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 		}
 	}
 
+	public void setTradeIndex(int index) {
+		tradeIndex = index;
+		markDirty();
+	}
+
+	public int getTradeIndex() {
+		return tradeIndex;
+	}
+
 	private void increaseCounter() {
 		counter++;
 	}
+
 	private void resetProgress() {
 		this.counter = 0;
 	}
+
 	private void tradeItem() {
 		this.removeStack(INPUT_SLOT, 1);
 		ItemStack result = new ItemStack(ModItems.BUCKET_OF_BEER);

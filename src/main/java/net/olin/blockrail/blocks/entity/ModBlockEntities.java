@@ -20,6 +20,11 @@ public class ModBlockEntities {
 					FabricBlockEntityTypeBuilder.create(TradeControllerBlockEntity::new,
 							ModBlocks.TRADE_CONTROLLER_BLOCK).build());
 
+	public static final BlockEntityType<MarketBlockEntity> MARKET_BLOCK_ENTITY =
+			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "market_block_be"),
+					FabricBlockEntityTypeBuilder.create(MarketBlockEntity::new,
+							ModBlocks.MARKET_BLOCK).build());
+
 
 
 	public static void registerBlockEntities() {

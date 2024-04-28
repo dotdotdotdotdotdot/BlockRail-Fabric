@@ -11,6 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.olin.blockrail.BlockRail;
 import net.olin.blockrail.blocks.custom.ExportStationBlock;
+import net.olin.blockrail.blocks.custom.MarketBlock;
 import net.olin.blockrail.blocks.custom.TradeControllerBlock;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -21,6 +22,8 @@ public class ModBlocks {
             new ExportStationBlock(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
 	public static final Block TRADE_CONTROLLER_BLOCK = registerBlock("trade_controller_block",
 			new TradeControllerBlock(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
+    public static final Block MARKET_BLOCK = registerBlock("market_block",
+			new MarketBlock(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
 
 	private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

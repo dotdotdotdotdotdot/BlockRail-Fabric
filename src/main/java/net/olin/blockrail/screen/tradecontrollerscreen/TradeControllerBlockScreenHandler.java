@@ -18,7 +18,7 @@ import net.olin.blockrail.screen.ModScreenHandlers;
 import org.jetbrains.annotations.Nullable;
 
 public class TradeControllerBlockScreenHandler extends ScreenHandler {
-
+	public int buttonIndex;
 	private final Inventory inventory;
 	public final TradeControllerBlockEntity blockEntity;
 	private final PropertyDelegate propertyDelegate;
@@ -64,11 +64,8 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 	}
 
 	public int getSelectedButtonIndex() {
-		return this.propertyDelegate.get(2);
+		return propertyDelegate.get(2);
 	}
-
-
-
 
 	protected TradeControllerBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, Inventory inventory, TradeControllerBlockEntity blockEntity, PropertyDelegate propertyDelegate) {
 		super(type, syncId);

@@ -26,6 +26,7 @@ public class ModItemGroups {
                         // Blocks
                         entries.add(ModBlocks.EXPORT_BLOCK);
 						entries.add(ModBlocks.TRADE_CONTROLLER_BLOCK);
+                        entries.add(ModBlocks.MARKET_BLOCK);
 
                     }).build());
     public static void registerItemGroups() {
