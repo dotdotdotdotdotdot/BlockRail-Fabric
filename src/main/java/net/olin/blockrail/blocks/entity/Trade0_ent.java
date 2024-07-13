@@ -6,52 +6,53 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtInt;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.olin.blockrail.BlockRail;
 import net.olin.blockrail.item.ModItems;
-import net.olin.blockrail.screen.tradecontrollerscreen.TradeControllerBlockScreenHandler;
-import net.olin.blockrail.trades.TradeRecipe;
+import net.olin.blockrail.screen.tradecontrollerscreen.Trade0_screen_handler;
 import org.jetbrains.annotations.Nullable;
-import java.util.Optional;
 
-public class TradeControllerBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
+public class Trade0_ent extends BlockEntity implements SidedInventory, ExtendedScreenHandlerFactory, ImplementedInventory {
 	private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
 	private static final int INPUT_SLOT = 0;
 	private static final int OUTPUT_SLOT = 1;
 	protected final PropertyDelegate propertyDelegate;
-	private int counter;
-	private int counted;
-	private int tradeIndex;
+	private int counterMax;
+	private int counterCurrent;
 
-	public TradeControllerBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.TRADE_CONTROLLER_BLOCK_ENTITY, pos, state);
-		this.tradeIndex = 0;
-		this.counter = 0;
+
+	//Trade data
+	private final int block_id = 0;
+
+	private Item inputItem = Items.BREAD;
+	private int inputAmount = 640; //Hur mycket input
+
+	private Item outputItem = ModItems.TICKET;
+	private int outputAmount = 1; //hur mycket output
+	//
+
+	public Trade0_ent(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.TRADE0, pos, state);
+		this.counterMax = inputAmount;
 		this.propertyDelegate = new PropertyDelegate() {
 			@Override
 			public int get(int index) {
 				return switch (index) {
-					case 0 -> TradeControllerBlockEntity.this.counter;
-					case 1 -> TradeControllerBlockEntity.this.counted;
-					case 2 -> TradeControllerBlockEntity.this.tradeIndex;
+					case 0 -> Trade0_ent.this.counterCurrent;
+					case 1 -> Trade0_ent.this.counterMax;
 
 					default -> 0;
 
@@ -61,25 +62,22 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 			public void set(int index, int value) {
 				switch (index) {
 					case 0:
-						TradeControllerBlockEntity.this.counter = value;
+						Trade0_ent.this.counterCurrent = value;
 					case 1:
-						TradeControllerBlockEntity.this.counted = value;
-					case 2:
-						TradeControllerBlockEntity.this.tradeIndex = value;
-						System.out.println("set pd: "+ tradeIndex);
+						Trade0_ent.this.counterMax = value;
 				}
 			}
 
 			@Override
 			public int size() {
-				return 3;
+				return 2;
 			}
 		};
 	}
 
 	@Override
 	public Text getDisplayName() {
-		return Text.translatable("block.blockrail.trade_controller_block");
+		return Text.empty();
 	}
 
 	@Override
@@ -91,17 +89,13 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		Inventories.writeNbt(nbt, inventory);
-		nbt.putInt("counter", this.counter);
-		nbt.putInt("trade_index", this.tradeIndex);
-		System.out.println("write: "+ tradeIndex);
+		nbt.putInt("counter", this.counterCurrent);
 	}
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		Inventories.readNbt(nbt, inventory);
-		this.counter = nbt.getInt("counter");
-		this.tradeIndex = nbt.getInt("trade_index");
-		System.out.println("readnbt: "+ tradeIndex);
+		this.counterCurrent = nbt.getInt("counterCurrent");
 	}
 	@Override
 	public DefaultedList<ItemStack> getItems() {
@@ -111,7 +105,7 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 	@Nullable
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new TradeControllerBlockScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+		return new Trade0_screen_handler(syncId, playerInventory, this, this.propertyDelegate);
 	}
 
 	public void tick(World world, BlockPos pos, BlockState state) {
@@ -120,42 +114,45 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 		}
 
 		if (isOutputSlotEmptyOrReceivable()) {
-			markDirty(world, pos, state);
 			if (this.hasTrade()) {
+
 				this.increaseCounter();
-				counter = 32;
-				markDirty(world, pos, state);
+				this.removeItem();
 
 				if (hasTradingFinished()) {
-					this.tradeItem();
+					this.giveItem();
 					this.resetProgress();
 				}
-			} else {
-				this.resetProgress();
 			}
 		}
 	}
 
 	private void increaseCounter() {
-		counter++;
+		this.counterCurrent++;
 	}
 	private void resetProgress() {
-		this.counter = 0;
+		this.counterCurrent = 0;
 	}
-	private void tradeItem() {
-		this.removeStack(INPUT_SLOT, 1);
-		ItemStack result = new ItemStack(ModItems.BUCKET_OF_BEER);
 
+	private void removeItem() {
+		boolean inputItemCheck = getStack(INPUT_SLOT).getItem() == inputItem;
+		if(inputItemCheck) {
+			this.removeStack(INPUT_SLOT, 1);
+		}
+	}
+
+	private void giveItem() {
+		ItemStack result = new ItemStack(outputItem);
 		this.setStack(OUTPUT_SLOT, new ItemStack(result.getItem(), getStack(OUTPUT_SLOT).getCount() + result.getCount()));
 	}
 
 	private boolean hasTradingFinished() {
-		return counter >= counted;
+		return counterCurrent >= counterMax;
 	}
 
 	private boolean hasTrade() {
-		ItemStack result = new ItemStack(ModItems.BUCKET_OF_BEER);
-		boolean hasInput = getStack(INPUT_SLOT).getItem() == Items.EMERALD;
+		ItemStack result = new ItemStack(outputItem);
+		boolean hasInput = getStack(INPUT_SLOT).getItem() == inputItem;
 
 		return hasInput && canInsertAmountIntoOutputSlot(result) && canInsertItemIntoOutputSlot(result.getItem());
 	}
@@ -170,5 +167,43 @@ public class TradeControllerBlockEntity extends BlockEntity implements ExtendedS
 
 	private boolean isOutputSlotEmptyOrReceivable() {
 		return this.getStack(OUTPUT_SLOT).isEmpty() || this.getStack(OUTPUT_SLOT).getCount() < this.getStack(OUTPUT_SLOT).getMaxCount();
+	}
+
+	public int[] getAvailableSlots(Direction side) {
+		return new int[]{0,1};
+	}
+
+	@Override
+	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+		if(slot == 1){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isValid(int slot, ItemStack stack) {
+        return true;
+	}
+
+
+	public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+		if(slot == 0){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean canPlayerUse(PlayerEntity player) {
+		return Inventory.canPlayerUse(this, player);
+	}
+
+	@Override
+	public void clear() {
+
 	}
 }

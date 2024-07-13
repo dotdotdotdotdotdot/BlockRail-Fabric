@@ -12,32 +12,32 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
 import net.minecraft.screen.slot.Slot;
-import net.olin.blockrail.blocks.entity.TradeControllerBlockEntity;
+import net.olin.blockrail.blocks.entity.Trade0_ent;
 import net.olin.blockrail.screen.ModScreenHandlers;
 
 import org.jetbrains.annotations.Nullable;
 
-public class TradeControllerBlockScreenHandler extends ScreenHandler {
+public class Trade0_screen_handler extends ScreenHandler {
 
 	private final Inventory inventory;
-	public final TradeControllerBlockEntity blockEntity;
+	public final Trade0_ent blockEntity;
 	private final PropertyDelegate propertyDelegate;
 
-	public TradeControllerBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+	public Trade0_screen_handler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
 		this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
 				new ArrayPropertyDelegate(3));
 	}
 
-	public TradeControllerBlockScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
-		super(ModScreenHandlers.TRADE_CONTROLLER_BLOCK_SCREEN_HANDLER, syncId);
+	public Trade0_screen_handler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
+		super(ModScreenHandlers.TRADE0_SCREEN_HANDLER, syncId);
         checkSize((Inventory) blockEntity, 2);
 		this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
 		this.propertyDelegate = arrayPropertyDelegate;
-		this.blockEntity = ((TradeControllerBlockEntity) blockEntity);
+		this.blockEntity = ((Trade0_ent) blockEntity);
 
-		this.addSlot(new Slot(inventory, 0, 36, 37));
-		this.addSlot(new Slot(inventory, 1, 120, 38));
+		this.addSlot(new Slot(inventory, 0, 26, 34));
+		this.addSlot(new Slot(inventory, 1, 134, 34));
 
 		addPlayerInventory(playerInventory);
 		addPlayerHotbar(playerInventory);
@@ -70,7 +70,7 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 
 
 
-	protected TradeControllerBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, Inventory inventory, TradeControllerBlockEntity blockEntity, PropertyDelegate propertyDelegate) {
+	protected Trade0_screen_handler(@Nullable ScreenHandlerType<?> type, int syncId, Inventory inventory, Trade0_ent blockEntity, PropertyDelegate propertyDelegate) {
 		super(type, syncId);
 		this.inventory = inventory;
 		this.blockEntity = blockEntity;
@@ -113,6 +113,14 @@ public class TradeControllerBlockScreenHandler extends ScreenHandler {
 				this.addSlot(new Slot(playerInventory, l+i*9+9,8+l*18,84+i*18));
 			}
 		}
+	}
+
+	public int getScaledProgress() {
+		int progress = this.propertyDelegate.get(0);
+		int maxProgress = this.propertyDelegate.get(1);
+		int progressArrowSize = 80;
+
+		return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
 	}
 
 	private void addPlayerHotbar(PlayerInventory playerInventory) {

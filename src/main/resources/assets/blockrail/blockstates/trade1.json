@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "facing=north": { "model":  "blockrail:block/trade1"},
+    "facing=south": { "model": "blockrail:block/trade1", "y": 180},
+    "facing=east": { "model": "blockrail:block/trade1", "y": 90},
+    "facing=west": { "model": "blockrail:block/trade1", "y": -90}
+  }
+}
+

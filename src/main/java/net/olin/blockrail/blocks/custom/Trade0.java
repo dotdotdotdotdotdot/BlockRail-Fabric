@@ -1,7 +1,5 @@
 package net.olin.blockrail.blocks.custom;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 
 import net.minecraft.block.Block;
@@ -10,6 +8,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -25,13 +24,19 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.olin.blockrail.blocks.entity.ExportStationBlockEntity;
+
 import net.olin.blockrail.blocks.entity.ModBlockEntities;
 
-public class ExportStationBlock extends BlockWithEntity implements BlockEntityProvider, IWrenchable {
-    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
-	public ExportStationBlock(Settings settings) {
+import net.olin.blockrail.blocks.entity.Trade0_ent;
+import org.jetbrains.annotations.Nullable;
+
+public class Trade0 extends BlockWithEntity implements BlockEntityProvider, IWrenchable {
+	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+	public Trade0(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
 	}
@@ -60,8 +65,8 @@ public class ExportStationBlock extends BlockWithEntity implements BlockEntityPr
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof ExportStationBlockEntity) {
-				ItemScatterer.spawn(world, pos, (ExportStationBlockEntity)blockEntity);
+			if (blockEntity instanceof Trade0_ent) {
+				ItemScatterer.spawn(world, pos, (Trade0_ent)blockEntity);
 				world.updateComparators(pos, this);
 			}
 			super.onStateReplaced(state, world, pos, newState, moved);
@@ -71,7 +76,7 @@ public class ExportStationBlock extends BlockWithEntity implements BlockEntityPr
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient) {
-			NamedScreenHandlerFactory screenHandlerFactory = ((ExportStationBlockEntity) world.getBlockEntity(pos));
+			NamedScreenHandlerFactory screenHandlerFactory = ((Trade0_ent) world.getBlockEntity(pos));
 
 			if (screenHandlerFactory != null) {
 				player.openHandledScreen(screenHandlerFactory);
@@ -84,15 +89,13 @@ public class ExportStationBlock extends BlockWithEntity implements BlockEntityPr
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return checkType(type, ModBlockEntities.EXPORT_STATION_BLOCK_ENTITY,
+		return checkType(type, ModBlockEntities.TRADE0,
 				(world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
 	}
 
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		return new ExportStationBlockEntity(pos, state);
+		return new Trade0_ent(pos, state);
 	}
-
-
 }

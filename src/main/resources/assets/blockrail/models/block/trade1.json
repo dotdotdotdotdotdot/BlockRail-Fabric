@@ -1,9 +1,9 @@
 {
-	"credit": "Made with Blockbench",
+	"credit": "Made with love by Samme20",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "blockrail:block/export_block",
-    	"particle": "blockrail:block/export_block"
+		"0": "blockrail:block/trade0",
+    	"particle": "blockrail:block/trade0"
 	},
 	"elements": [
 		{
@@ -152,7 +152,7 @@
 	},
 	"groups": [
 		{
-			"name": "export_block",
+			"name": "trade1",
 			"origin": [0, 0, 0],
 			"color": 0,
 			"children": [
