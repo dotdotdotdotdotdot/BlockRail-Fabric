@@ -10,20 +10,29 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.olin.blockrail.BlockRail;
-import net.olin.blockrail.blocks.custom.ExportStationBlock;
-import net.olin.blockrail.blocks.custom.MarketBlock;
-import net.olin.blockrail.blocks.custom.TradeControllerBlock;
+import net.olin.blockrail.blocks.custom.Trade0;
+import net.olin.blockrail.blocks.custom.Trade1;
+import net.olin.blockrail.blocks.custom.Trade2;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
 
 public class ModBlocks {
-    public static final Block EXPORT_BLOCK = registerBlock("export_block",
-            new ExportStationBlock(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
-	public static final Block TRADE_CONTROLLER_BLOCK = registerBlock("trade_controller_block",
-			new TradeControllerBlock(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
-    public static final Block MARKET_BLOCK = registerBlock("market_block",
-			new MarketBlock(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
+
+	public static final Block TRADE0 = registerBlock("trade0",
+			new Trade0(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
+
+
+    public static final Block TRADE1 = registerBlock("trade1",
+            new Trade1(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
+
+
+    public static final Block TRADE2 = registerBlock("trade2",
+            new Trade2(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
+
+
+    public static final Block TRADE3 = registerBlock("trade3",
+            new Trade2(FabricBlockSettings.copyOf(Blocks.NETHERITE_BLOCK).nonOpaque()));
 
 	private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

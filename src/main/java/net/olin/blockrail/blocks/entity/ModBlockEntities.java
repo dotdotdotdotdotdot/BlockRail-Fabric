@@ -10,22 +10,26 @@ import net.olin.blockrail.blocks.ModBlocks;
 
 
 public class ModBlockEntities {
-	public static final BlockEntityType<ExportStationBlockEntity> EXPORT_STATION_BLOCK_ENTITY =
-			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "export_block_be"),
-					FabricBlockEntityTypeBuilder.create(ExportStationBlockEntity::new,
-							ModBlocks.EXPORT_BLOCK).build());
-
-	public static final BlockEntityType<TradeControllerBlockEntity> TRADE_CONTROLLER_BLOCK_ENTITY =
-			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "trade_controller_block_be"),
-					FabricBlockEntityTypeBuilder.create(TradeControllerBlockEntity::new,
-							ModBlocks.TRADE_CONTROLLER_BLOCK).build());
-
-	public static final BlockEntityType<MarketBlockEntity> MARKET_BLOCK_ENTITY =
-			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "market_block_be"),
-					FabricBlockEntityTypeBuilder.create(MarketBlockEntity::new,
-							ModBlocks.MARKET_BLOCK).build());
+	public static final BlockEntityType<Trade0_ent> TRADE0 =
+			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "trade0_controller_block_be"),
+					FabricBlockEntityTypeBuilder.create(Trade0_ent::new,
+							ModBlocks.TRADE0).build());
 
 
+	public static final BlockEntityType<Trade1_ent> TRADE1 =
+			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "trade1_controller_block_be"),
+					FabricBlockEntityTypeBuilder.create(Trade1_ent::new,
+							ModBlocks.TRADE1).build());
+
+	public static final BlockEntityType<Trade2_ent> TRADE2 =
+			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "trade2_controller_block_be"),
+					FabricBlockEntityTypeBuilder.create(Trade2_ent::new,
+							ModBlocks.TRADE2).build());
+
+	public static final BlockEntityType<Trade3_ent> TRADE3 =
+			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "trade3_controller_block_be"),
+					FabricBlockEntityTypeBuilder.create(Trade3_ent::new,
+							ModBlocks.TRADE3).build());
 
 	public static void registerBlockEntities() {
 		BlockRail.LOGGER.info("Loading block entities for " + BlockRail.MOD_ID);

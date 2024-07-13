@@ -24,9 +24,10 @@ public class ModItemGroups {
 						entries.add(ModItems.BUCKET_OF_BEER);
 
                         // Blocks
-                        entries.add(ModBlocks.EXPORT_BLOCK);
-						entries.add(ModBlocks.TRADE_CONTROLLER_BLOCK);
-                        entries.add(ModBlocks.MARKET_BLOCK);
+						entries.add(ModBlocks.TRADE0);
+                        entries.add(ModBlocks.TRADE1);
+                        entries.add(ModBlocks.TRADE2);
+                        entries.add(ModBlocks.TRADE3);
 
                     }).build());
     public static void registerItemGroups() {

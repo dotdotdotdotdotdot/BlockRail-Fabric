@@ -15,9 +15,10 @@ public class ModModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-		blockStateModelGenerator.registerSimpleState(ModBlocks.EXPORT_BLOCK);
-		blockStateModelGenerator.registerSimpleState(ModBlocks.TRADE_CONTROLLER_BLOCK);
-		blockStateModelGenerator.registerSimpleState(ModBlocks.MARKET_BLOCK);
+		blockStateModelGenerator.registerSimpleState(ModBlocks.TRADE0);
+		blockStateModelGenerator.registerSimpleState(ModBlocks.TRADE1);
+		blockStateModelGenerator.registerSimpleState(ModBlocks.TRADE2);
+		blockStateModelGenerator.registerSimpleState(ModBlocks.TRADE3);
 	}
 
 	@Override

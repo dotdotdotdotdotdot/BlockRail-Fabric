@@ -1,4 +1,4 @@
-package net.olin.blockrail.screen.exportscreen;
+package net.olin.blockrail.screen.tradecontrollerscreen;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,34 +10,32 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-
 import net.minecraft.screen.slot.Slot;
-import net.olin.blockrail.blocks.entity.ExportStationBlockEntity;
-
+import net.olin.blockrail.blocks.entity.Trade3_ent;
 import net.olin.blockrail.screen.ModScreenHandlers;
-
 import org.jetbrains.annotations.Nullable;
 
-public class ExportBlockScreenHandler extends ScreenHandler {
-	private final Inventory inventory;
-	private final PropertyDelegate propertyDelegate;
-	public final ExportStationBlockEntity blockEntity;
+public class Trade3_screen_handler extends ScreenHandler {
 
-	public ExportBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+	private final Inventory inventory;
+	public final Trade3_ent blockEntity;
+	private final PropertyDelegate propertyDelegate;
+
+	public Trade3_screen_handler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
 		this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()),
-				new ArrayPropertyDelegate(2));
+				new ArrayPropertyDelegate(3));
 	}
 
-	public ExportBlockScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
-		super(ModScreenHandlers.EXPORT_BLOCK_SCREEN_HANDLER ,syncId);
-		checkSize(((Inventory) blockEntity), 2);
+	public Trade3_screen_handler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
+		super(ModScreenHandlers.TRADE3_SCREEN_HANDLER, syncId);
+        checkSize((Inventory) blockEntity, 2);
 		this.inventory = ((Inventory) blockEntity);
-		inventory.onOpen(playerInventory.player);
+        inventory.onOpen(playerInventory.player);
 		this.propertyDelegate = arrayPropertyDelegate;
-		this.blockEntity = ((ExportStationBlockEntity) blockEntity);
+		this.blockEntity = ((Trade3_ent) blockEntity);
 
-		this.addSlot(new Slot(inventory, 0,26,34));
-		this.addSlot(new Slot(inventory, 1,134,34));
+		this.addSlot(new Slot(inventory, 0, 26, 34));
+		this.addSlot(new Slot(inventory, 1, 134, 34));
 
 		addPlayerInventory(playerInventory);
 		addPlayerHotbar(playerInventory);
@@ -45,24 +43,38 @@ public class ExportBlockScreenHandler extends ScreenHandler {
 		addProperties(arrayPropertyDelegate);
 	}
 
-	public boolean isTrading() {
-		return propertyDelegate.get(0) > 0;
+	public boolean isTrading() { return propertyDelegate.get(0) > 0; }
+
+	public int getCounterProgress() {
+		int counter = this.propertyDelegate.get(0);
+		int counted = this.propertyDelegate.get(1);
+		int counterBar = 59;
+
+		return counted != 0 && counter != 0 ? counter * counterBar / counted : 0;
 	}
 
-	public int getScaledProgress() {
-		int progress = this.propertyDelegate.get(0);
-		int maxProgress = this.propertyDelegate.get(1);
-		int progressArrowSize = 80;
-
-		return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+	public int getCount() {
+		return this.propertyDelegate.get(0);
 	}
 
-	protected ExportBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, Inventory inventory, PropertyDelegate propertyDelegate, ExportStationBlockEntity blockEntity) {
+	public void setSelectedButtonIndex(int i) {
+		propertyDelegate.set(2, i);
+	}
+
+	public int getSelectedButtonIndex() {
+		return this.propertyDelegate.get(2);
+	}
+
+
+
+
+	protected Trade3_screen_handler(@Nullable ScreenHandlerType<?> type, int syncId, Inventory inventory, Trade3_ent blockEntity, PropertyDelegate propertyDelegate) {
 		super(type, syncId);
-        this.inventory = inventory;
-        this.propertyDelegate = propertyDelegate;
-        this.blockEntity = blockEntity;
+		this.inventory = inventory;
+		this.blockEntity = blockEntity;
+		this.propertyDelegate = propertyDelegate;
     }
+
 
 	@Override
 	public ItemStack quickMove(PlayerEntity player, int invSlot) {
@@ -99,6 +111,14 @@ public class ExportBlockScreenHandler extends ScreenHandler {
 				this.addSlot(new Slot(playerInventory, l+i*9+9,8+l*18,84+i*18));
 			}
 		}
+	}
+
+	public int getScaledProgress() {
+		int progress = this.propertyDelegate.get(0);
+		int maxProgress = this.propertyDelegate.get(1);
+		int progressArrowSize = 80;
+
+		return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
 	}
 
 	private void addPlayerHotbar(PlayerInventory playerInventory) {

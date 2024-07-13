@@ -11,7 +11,9 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
 
 	@Override
 	public void generate() {
-		addDrop(ModBlocks.EXPORT_BLOCK);
-		addDrop(ModBlocks.TRADE_CONTROLLER_BLOCK);
+		addDrop(ModBlocks.TRADE0);
+		addDrop(ModBlocks.TRADE1);
+		addDrop(ModBlocks.TRADE2);
+		addDrop(ModBlocks.TRADE3);
 	}
 }
