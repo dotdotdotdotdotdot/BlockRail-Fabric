@@ -21,6 +21,16 @@ public class ModBlockEntities {
 					FabricBlockEntityTypeBuilder.create(Trade1_ent::new,
 							ModBlocks.TRADE1).build());
 
+	public static final BlockEntityType<Trade2_ent> TRADE2 =
+			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "trade2_controller_block_be"),
+					FabricBlockEntityTypeBuilder.create(Trade2_ent::new,
+							ModBlocks.TRADE2).build());
+
+	public static final BlockEntityType<Trade3_ent> TRADE3 =
+			Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BlockRail.MOD_ID, "trade3_controller_block_be"),
+					FabricBlockEntityTypeBuilder.create(Trade3_ent::new,
+							ModBlocks.TRADE3).build());
+
 	public static void registerBlockEntities() {
 		BlockRail.LOGGER.info("Loading block entities for " + BlockRail.MOD_ID);
 	}

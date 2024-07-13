@@ -26,6 +26,8 @@ public class ModItemGroups {
                         // Blocks
 						entries.add(ModBlocks.TRADE0);
                         entries.add(ModBlocks.TRADE1);
+                        entries.add(ModBlocks.TRADE2);
+                        entries.add(ModBlocks.TRADE3);
 
                     }).build());
     public static void registerItemGroups() {

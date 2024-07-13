@@ -1,6 +1,8 @@
 {
   "block.blockrail.trade0": "Trade Block 1",
   "block.blockrail.trade1": "Trade Block 2",
+  "block.blockrail.trade2": "Trade Block 3",
+  "block.blockrail.trade3": "Trade Block 4",
   "block.blockrail.trade_controller_block": "Trade Controller",
   "item.blockrail.bucket_of_beer": "Bucket of Beer",
   "item.blockrail.ticket": "Ticket",

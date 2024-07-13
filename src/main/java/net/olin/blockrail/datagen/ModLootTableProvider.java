@@ -13,5 +13,7 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
 	public void generate() {
 		addDrop(ModBlocks.TRADE0);
 		addDrop(ModBlocks.TRADE1);
+		addDrop(ModBlocks.TRADE2);
+		addDrop(ModBlocks.TRADE3);
 	}
 }

@@ -8,6 +8,8 @@ import net.minecraft.util.Identifier;
 import net.olin.blockrail.BlockRail;
 import net.olin.blockrail.screen.tradecontrollerscreen.Trade0_screen_handler;
 import net.olin.blockrail.screen.tradecontrollerscreen.Trade1_screen_handler;
+import net.olin.blockrail.screen.tradecontrollerscreen.Trade2_screen_handler;
+import net.olin.blockrail.screen.tradecontrollerscreen.Trade3_screen_handler;
 
 public class ModScreenHandlers {
 
@@ -18,6 +20,14 @@ public class ModScreenHandlers {
 	public static final ScreenHandlerType<Trade1_screen_handler> TRADE1_SCREEN_HANDLER =
 			Registry.register(Registries.SCREEN_HANDLER, new Identifier(BlockRail.MOD_ID, "trade1_controller_block"),
 					new ExtendedScreenHandlerType<>(Trade1_screen_handler::new));
+
+	public static final ScreenHandlerType<Trade2_screen_handler> TRADE2_SCREEN_HANDLER =
+			Registry.register(Registries.SCREEN_HANDLER, new Identifier(BlockRail.MOD_ID, "trade2_controller_block"),
+					new ExtendedScreenHandlerType<>(Trade2_screen_handler::new));
+
+	public static final ScreenHandlerType<Trade3_screen_handler> TRADE3_SCREEN_HANDLER =
+			Registry.register(Registries.SCREEN_HANDLER, new Identifier(BlockRail.MOD_ID, "trade3_controller_block"),
+					new ExtendedScreenHandlerType<>(Trade3_screen_handler::new));
 
 	public static void registerScreenHandler() {
 		BlockRail.LOGGER.info("Loading screens for " + BlockRail.MOD_ID);
